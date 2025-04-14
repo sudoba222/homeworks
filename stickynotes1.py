@@ -1,7 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon,QAction
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
@@ -10,6 +10,8 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QVBoxLayout,
     QWidget,
+    QMenu
+
 )
 
 app = QApplication(sys.argv)
@@ -78,5 +80,20 @@ def handle_tray_click(reason):
 
 
 tray.activated.connect(handle_tray_click)
+app.setQuitOnLastWindowClosed(False)
+
+
+menu = QMenu()
+add_note_action = QAction("Add note")
+add_note_action.triggered.connect(create_notewindow)
+menu.addAction(add_note_action)
+
+
+quit_action = QAction("Quit")
+quit_action.triggered.connect(app.quit)
+menu.addAction(quit_action)
+
+
+tray.setContextMenu(menu)
 
 app.exec()
